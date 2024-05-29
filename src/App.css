@@ -16,7 +16,7 @@ body {
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   background-color: white; /* Color de fondo */
-  opacity: 0.7; /* Opacidad del div */
+  opacity: 0.9; /* Opacidad del div */
 }
 
 .user-list {
@@ -55,6 +55,38 @@ body {
   object-fit: cover;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
 }
+
+.user-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-bottom: 30px;
+}
+
+.user-form div {
+  display: flex;
+  flex-direction: column;
+}
+
+.user-form label {
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.user-form input {
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  transition: border-color 0.3s ease;
+}
+
+.user-form input:focus {
+  border-color: #007BFF;
+  outline: none;
+}
+
+
 
 /*.App {
   text-align: center;

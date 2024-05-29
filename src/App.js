@@ -6,20 +6,29 @@ const UserList = () => {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    const fetchUsers = async () => {
-      try {
-        const response = await axios.get('http://localhost:3000/users');
-        setUsers(response.data);
-        setLoading(false);
-      } catch (error) {
-        console.error('Error fetching users:', error);
-        setLoading(false);
-      }
-    };
+  const fetchUsers = async () => {
+    try {
+      const response = await axios.get('http://localhost:3000/users');
+      setUsers(response.data);
+      setLoading(false);
+    } catch (error) {
+      console.error('Error fetching users:', error);
+      setLoading(false);
+    }
+  };
 
+  useEffect(() => {
     fetchUsers();
   }, []);
+
+  const handleAddUser = async (user) => {
+    try {
+      const response = await axios.post('http://localhost:3000/users', user);
+      setUsers([...users, { ...user, id: response.data.insertId }]);
+    } catch (error) {
+      console.error('Error adding user:', error);
+    }
+  };
 
   if (loading) {
     return <div>Cargando usuarios...</div>;
@@ -28,6 +37,7 @@ const UserList = () => {
   return (
     <div className="user-list-container">
       <h1>Lista de Usuarios</h1>
+      <UserForm onAddUser={handleAddUser} />
       {users.length > 0 ? (
         <ul className="user-list">
           {users.map(user => (
@@ -45,6 +55,38 @@ const UserList = () => {
   );
 };
 
+const UserForm = ({ onAddUser }) => {
+  const [nombre, setNombre] = useState('');
+  const [apellido, setApellido] = useState('');
+  const [email, setEmail] = useState('');
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    onAddUser({ nombre, apellido, email });
+    setNombre('');
+    setApellido('');
+    setEmail('');
+  };
+
+  return (
+    <form onSubmit={handleSubmit} className="user-form">
+      <div>
+        <label>Nombre:</label>
+        <input type="text" value={nombre} onChange={(e) => setNombre(e.target.value)} required />
+      </div>
+      <div>
+        <label>Apellido:</label>
+        <input type="text" value={apellido} onChange={(e) => setApellido(e.target.value)} required />
+      </div>
+      <div>
+        <label>Email:</label>
+        <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
+      </div>
+      <button type="submit">Agregar Usuario</button>
+    </form>
+  );
+};
+
 const App = () => {
   return (
     <div className="app">
@@ -54,6 +96,9 @@ const App = () => {
 };
 
 export default App;
+
+
+
 
 
 
